@@ -34,10 +34,21 @@ export default function BettingApp() {
   const [editingBetId, setEditingBetId] = useState<string | null>(null)
   const [filter, setFilter] = useState("all")
   const [showForm, setShowForm] = useState(false)
+  const [interestingOdds, setInterestingOdds] = useState(() => {
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("interestingOdds")
+      return stored || ""
+    }
+    return ""
+  })
 
   useEffect(() => {
     localStorage.setItem("bets", JSON.stringify(bets))
   }, [bets])
+
+  useEffect(() => {
+    localStorage.setItem("interestingOdds", interestingOdds)
+  }, [interestingOdds])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -121,7 +132,7 @@ export default function BettingApp() {
   return (
     <div className="max-w-md mx-auto pb-20 px-2">
       <header className="sticky top-0 z-10 bg-black py-4 mb-4 border-b border-gray-800">
-        <h1 className="text-xl font-bold text-center">Mes Paris Sportifs</h1>
+        <h1 className="text-xl font-bold text-center">LSV PRONO</h1>
 
         <div className="flex justify-between items-center mt-2">
           <div className="text-sm">
@@ -432,6 +443,25 @@ export default function BettingApp() {
           )}
         </>
       )}
+
+      <Card className="mb-20 border-gray-800 bg-gray-900">
+        <CardContent className="p-4">
+          <h2 className="font-bold mb-3 flex items-center gap-2">
+            <TrendingUp size={18} className="text-yellow-400" />
+            Cotes Intéressantes
+          </h2>
+          <textarea
+            value={interestingOdds}
+            onChange={(e) => setInterestingOdds(e.target.value)}
+            placeholder="Notez ici les cotes intéressantes que vous repérez...&#10;&#10;Exemple:&#10;PSG vs OM - Victoire PSG @1.85&#10;Real vs Barca - Plus de 2.5 buts @2.10"
+            className="w-full h-32 p-3 bg-gray-800 border border-gray-700 rounded-lg text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            rows={6}
+          />
+          <div className="text-xs text-gray-400 mt-2">
+            💡 Utilisez cette zone pour noter rapidement les opportunités de paris que vous repérez
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 p-2">
         <div className="max-w-md mx-auto flex gap-2">
