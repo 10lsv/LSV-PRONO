@@ -1,14 +1,18 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  images: {
-    unoptimized: true,
-  },
-}
-
-export default nextConfig
+export default {
+  reactStrictMode: true,
+  headers: async () => [
+    {
+      source: "/",
+      headers: [
+        {
+          key: "Content-Type",
+          value: "text/html; charset=utf-8"
+        },
+        {
+          key: "X-UA-Compatible",
+          value: "IE=edge"
+        }
+      ]
+    }
+  ]
+};
